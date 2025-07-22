@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { categories } from "../data/categories";
 import { useCart } from "../hooks/useCart";
-import signInImg from "../assets/inn.jpg";
-import signOutImg from "../assets/in.jpg";
+
+import signOutImg from "../assets/cart.png";
 
 
 const Navbar = ({ onSearch, onCategoryChange }) => {
@@ -30,8 +30,8 @@ const Navbar = ({ onSearch, onCategoryChange }) => {
           🛍️ FakeStore
         </div>
 
-        {/* Center - Links */}
-        <div className="flex gap-6 " >
+       
+        <div className="flex gap-4 " >
           <NavLink
             to="/"
             className={({ isActive }) =>
@@ -71,12 +71,9 @@ const Navbar = ({ onSearch, onCategoryChange }) => {
 
         {/* Right - Auth Links */}
         <div className="flex gap-4 items-center">
+    
             <button className="flex items-center text-gray-600 hover:text-gray-500 transition-transform duration-300 hover:scale-110">
-                <img src={signInImg} alt="Sign In" className="h-14 w-14 mr-1" />
-                 
-            </button>
-            <button className="flex items-center text-gray-600 hover:text-gray-500 transition-transform duration-300 hover:scale-110">
-                <img src={signOutImg} alt="Sign Out" className="h-14 w-14 mr-1" />
+                <img src={signOutImg} alt="cart" className="h-12 w-12 mr-1" />
                 
             </button>
         </div>
@@ -84,7 +81,7 @@ const Navbar = ({ onSearch, onCategoryChange }) => {
       </div>
              <div className="h-2 bg-white w-full"></div> 
       {/* Bottom Row */}
-      <div className="bg-gray-100   w-full mx-auto flex flex-col sm:flex-row items-center justify-center gap-2 px-4 py-2 border-t">
+      <div className="bg-gray-100 p-12  w-full mx-auto flex flex-col sm:flex-row items-center justify-center gap-2 px-4 py-2 border-t">
         {/* Left - Categories */}
         <select
           onChange={(e) => onCategoryChange(e.target.value)}
@@ -105,11 +102,11 @@ const Navbar = ({ onSearch, onCategoryChange }) => {
             placeholder="Search products..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="border p-2 rounded w-full sm:w-64 md:w-80 lg:w-[990px]   sm:w-64 focus:outline-none focus:ring focus:border-gray-500"
+            className="border p-2  w-full sm:w-64 md:w-80 lg:w-[990px]   sm:w-64 focus:outline-none focus:ring focus:border-gray-500"
           />
           <button
             type="submit"
-            className="bg-gray-400 text-white px-3 py-2 rounded hover:bg-gray-450"
+            className="bg-gray-400 text-white px-3 py-2  hover:bg-gray-450"
           >
             Search
           </button>

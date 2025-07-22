@@ -29,10 +29,9 @@ const Footer = () => {
           <h3 className="text-xl font-semibold mb-2">Quick Links</h3>
           <ul className="space-y-1">
             <li className="hover:underline cursor-pointer">Home</li>
-            <li className="hover:underline cursor-pointer">About Us</li>
-            <li className="hover:underline cursor-pointer">Services</li>
+            <li className="hover:underline cursor-pointer">Cart</li>
+            <li className="hover:underline cursor-pointer">CheckOut</li>
             <li className="hover:underline cursor-pointer">Products</li>
-            <li className="hover:underline cursor-pointer">Contact Us</li>
           </ul>
         </div>
 
