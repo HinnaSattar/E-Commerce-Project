@@ -1,15 +1,23 @@
-// src/components/CartSummaryBox.jsx
-
 import React from "react";
 import { useCart } from "../hooks/useCart";
+import { useNavigate } from "react-router-dom";
 
 const CartSummaryBox = () => {
   const cart = useCart((state) => state.cart) || [];
 
-  const totalPrice = cart.reduce(
+  const subtotal = cart.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
+
+  const shipping = cart.length > 0 ? 10 : 0; // $10 fixed shipping if cart has items
+  const tax = subtotal * 0.1; // 10% tax
+  const total = subtotal + shipping + tax;
+  const navigate = useNavigate();
+  
+    const handleCheckout = () => {
+      navigate("/checkout");
+    };
 
   return (
     <div className="bg-white rounded-lg shadow p-4 w-full max-w-sm sticky top-24">
@@ -17,27 +25,32 @@ const CartSummaryBox = () => {
       {cart.length === 0 ? (
         <p className="text-gray-500">Your cart is empty.</p>
       ) : (
-        <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
-          {cart.map((item) => (
-            <div key={item.id} className="flex items-center gap-2 border-b pb-2">
-              <img
-                src={item.image}
-                alt={item.title}
-                className="w-16 h-16 object-contain rounded"
-              />
-              <div className="flex-1">
-                <p className="text-sm font-semibold">{item.title}</p>
-                <p className="text-xs text-gray-500">Qty: {item.quantity}</p>
-                <p className=" font-bold text-gray-500 ">
-                  ${item.price}
-                </p>
-              </div>
-            </div>
-          ))}
-          <div className="font-bold flex justify-between border-t pt-2">
-            <span>Total:</span>
-            <span>${totalPrice.toFixed(2)}</span>
+        <div className="space-y-2">
+          <div className="flex justify-between border-b pb-1">
+            <span>Subtotal:</span>
+            <span>${subtotal.toFixed(2)}</span>
           </div>
+          <div className="flex justify-between border-b pb-1">
+            <span>Shipping:</span>
+            <span>${shipping.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between border-b pb-1">
+            <span>Tax (10%):</span>
+            <span>${tax.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between font-bold pt-2 border-t mt-2">
+            <span>Total:</span>
+            <span>${total.toFixed(2)}</span>
+          </div>
+           {/* Checkout Button */}
+            <div className="flex justify-center mt-6">
+              <button
+                onClick={handleCheckout}
+                className="bg-gray-400 text-white px-6 py-2 rounded hover:bg-gray-500"
+              >
+                Checkout
+              </button>
+            </div>
         </div>
       )}
     </div>

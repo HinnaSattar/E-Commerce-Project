@@ -1,25 +1,53 @@
-import React from "react";
+// src/components/AddSection.jsx
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 
-// Images import
-import img1 from "../ads/img1.jpg";
-import img2 from "../ads/img2.jpg";
-import img3 from "../ads/img3.jpg";
-import img6 from "../ads/img6.jpg";
-
-
-const slides = [
-  { img: img1, text: "Discover the latest collections with premium quality and unbeatable prices.", bgColor: "#f5e7da" },
-  { img: img2, text: "Your style journey starts here. Explore now for amazing discounts and offers.", bgColor: "#e0f7f4" },
-  { img: img3, text: "Exclusive arrivals and seasonal essentials just for you, shop smarter today.", bgColor: "#f9f1ec" },
-  { img: img6, text: "Discover the latest collections with premium quality and unbeatable prices.", bgColor: "#f5e7da" },
- 
+// Titles and descriptions for each slide
+const categorySlides = [
+  { title: "Stylish Bag", desc: "Carry your essentials with elegance and ease." },
+  { title: "Men's Collection", desc: "Refined menswear for every occasion." },
+  { title: "Women's Collection", desc: "Elegant styles for modern women." },
+  { title: "Electronics", desc: "Smart gadgets that simplify your life." },
+  { title: "Jewelry", desc: "Elegant jewelry to enhance your style." },
 ];
 
-const AddSection = () => {
+const AddSection = ({ scrollToProductList }) => {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const ids = [1, 2, 19, 14];
+        const productFetches = ids.map(id =>
+          fetch(`https://fakestoreapi.com/products/${id}`).then(res => res.json())
+        );
+
+        // Fetch jewelry category separately
+        const jewelryProduct = await fetch(`https://fakestoreapi.com/products/category/jewelery`)
+          .then(res => res.json())
+          .then(data => data[0]);
+
+        const fetchedProducts = await Promise.all(productFetches);
+        setProducts([...fetchedProducts, jewelryProduct]);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  if (products.length < 5) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-gray-400"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full">
       <Swiper
@@ -27,26 +55,33 @@ const AddSection = () => {
         autoplay={{ delay: 3000 }}
         pagination={{ clickable: true }}
         loop={true}
-        className="w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px]"// responsive height
+        className="w-full h-[280px] sm:h-[350px] md:h-[400px] lg:h-[460px]"
       >
-        {slides.map((slide, index) => (
-          <SwiperSlide key={index}>
-            <div className="relative w-full h-full">
-              {/* Full-width image */}
-              <img
-                src={slide.img}
-                alt={`Slide ${index + 1}`}
-                className="w-full h-full object-cover"
-              />
-
-              {/* Text positioned on top-left */}
-              <div className="absolute top-6 left-6 md:top-8 md:left-12 flex flex-col items-start gap-2">
-                <p className="text-gray-400 text-lg  font-bold max-w-[250px] break-words leading-tight">
-                  {slide.text}
+        {products.map((product, index) => (
+          <SwiperSlide key={product.id}>
+            <div className="flex flex-col md:flex-row items-center justify-between bg-white px-4 md:px-12 py-6 md:py-12 h-full">
+              {/* Text */}
+              <div className="flex-1 space-y-4 md:pr-10 text-center md:text-left">
+                <h2 className="text-3xl md:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800">
+                  {categorySlides[index].title}
+                </h2>
+                <p className="text-gray-600 text-base md:text-lg max-w-md mx-auto md:mx-0">
+                  {categorySlides[index].desc}
                 </p>
-                <button className="bg-gray-400 text-white text-xs md:text-sm px-3 py-1 rounded hover:bg-gray-500 transition">
-                  Shop Now
+                <button
+                  onClick={scrollToProductList}
+                  className="bg-gray-800 text-white px-5 py-2 rounded hover:bg-gray-700 transition"
+                >
+                  Shop Now →
                 </button>
+              </div>
+              {/* Image */}
+              <div className="flex-1 mt-4 md:mt-0 flex justify-center">
+                <img
+                  src={product.image}
+                  alt={product.title}
+                  className="w-full max-w-xs md:max-w-sm object-contain h-56 md:h-80"
+                />
               </div>
             </div>
           </SwiperSlide>

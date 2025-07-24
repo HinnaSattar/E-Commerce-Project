@@ -1,7 +1,8 @@
 // src/components/AddItemSection.jsx
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { useProductStore } from "../hooks/useProducts";
+
+import { useProductStore } from "../hooks/useProductStore";
 
 const AddItemSection = () => {
   const addProduct = useProductStore((state) => state.addProduct);

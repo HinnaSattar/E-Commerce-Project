@@ -1,7 +1,7 @@
+// src/App.jsx
 import React, { useState } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import AddSection from "./components/AddSection";
 import Home from "./pages/Home";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import CartPage from "./pages/CartPage";
@@ -12,21 +12,15 @@ import Footer from "./components/Footer";
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
-  const location = useLocation();
 
   const handleSearch = (query) => setSearchQuery(query);
   const handleCategoryChange = (category) => setSelectedCategory(category);
 
   return (
-    <div className="p-0 m-0 bg-gray-50 min-h-screen">
+    <div className=" bg-gray-50 min-h-screen">
       <Navbar onSearch={handleSearch} onCategoryChange={handleCategoryChange} />
-
-      {/* ✅ Slider will only show on Home page */}
-      {location.pathname === "/" && <AddSection />}
-
       <Toaster position="top-right" />
-
-      <div className="p-4 mx-auto">
+      <div className="">
         <Routes>
           <Route
             path="/"

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useCart } from "../hooks/useCart";
-import StarRating from "../components/StarRating";
-import CartSummaryBox from "../components/CartSummaryBox";
+
+import CheckoutSummaryBox from "../components/CheckoutSummaryBox";
 
 const CheckoutPage = () => {
   const cart = useCart((state) => state.cart) || [];
@@ -40,28 +40,7 @@ const CheckoutPage = () => {
           <p className="text-center">Your cart is empty.</p>
         ) : (
           <>
-            <ul className="mb-4 space-y-2">
-              {cart.map((item) => (
-                <li
-                  key={item.id}
-                  className="border-b pb-2 flex items-center gap-4"
-                >
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-20 h-20 object-contain rounded"
-                  />
-                  <div className="flex-1">
-                    <p className="font-semibold">{item.title}</p>
-                    <p>Quantity: {item.quantity}</p>
-                    <p className="text-gray-500 font-bold">${item.price}</p>
-                    <StarRating rating={item.rating?.rate || 0} />
-                  </div>
-                </li>
-              ))}
-            </ul>
-
-            <form onSubmit={handleSubmit} className="space-y-3">
+             <form onSubmit={handleSubmit} className="space-y-3">
               <input
                 type="text"
                 name="name"
@@ -126,7 +105,7 @@ const CheckoutPage = () => {
 
               <button
                 type="submit"
-                className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500 w-full"
+                className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500 w-full sticky-b"
               >
                 Place Order
               </button>
@@ -135,7 +114,7 @@ const CheckoutPage = () => {
         )}
       </div>
       <div className="w-full md:w-[300px]">
-        <CartSummaryBox />
+        <CheckoutSummaryBox />
       </div>
     </div>
   );

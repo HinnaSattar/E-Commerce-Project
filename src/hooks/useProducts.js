@@ -1,51 +1,37 @@
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { create } from "zustand";
-
-// Zustand store
-export const useProductStore = create((set, get) => ({
-  products: JSON.parse(localStorage.getItem("products")) || [],
-  setProducts: (products) => {
-    localStorage.setItem("products", JSON.stringify(products));
-    set({ products });
-  },
-  addProduct: (product) => {
-    const updated = [...get().products, product];
-    localStorage.setItem("products", JSON.stringify(updated));
-    set({ products: updated });
-  },
-  updateProduct: (updatedProduct) => {
-    const updated = get().products.map((p) =>
-      p.id === updatedProduct.id ? updatedProduct : p
-    );
-    localStorage.setItem("products", JSON.stringify(updated));
-    set({ products: updated });
-  },
-  deleteProduct: (id) => {
-    const updated = get().products.filter((p) => p.id !== id);
-    localStorage.setItem("products", JSON.stringify(updated));
-    set({ products: updated });
-  },
-}));
+import { useEffect, useState } from "react";
+import { useProductStore } from "./useProductStore";
 
 export const useProducts = () => {
-  const { setProducts, products } = useProductStore();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const products = useProductStore((state) => state.products);
+  const setProducts = useProductStore((state) => state.setProducts);
 
-  return useQuery({
-    queryKey: ["products"],
-    queryFn: async () => {
-      const response = await axios.get("https://fakestoreapi.com/products");
-      const apiProducts = response.data;
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch("https://fakestoreapi.com/products");
+        const data = await res.json();
 
-      // Merge API + Local products without duplicates
-      const localProducts = products.filter(
-        (lp) => !apiProducts.some((ap) => ap.id === lp.id)
-      );
-      const mergedProducts = [...apiProducts, ...localProducts];
+        // If no local products, initialize with API data
+        if (products.length === 0) {
+          setProducts(data);
+        } else {
+          // Merge API products not present in local state
+          const localIds = new Set(products.map((p) => p.id));
+          const merged = [...products, ...data.filter((p) => !localIds.has(p.id))];
+          setProducts(merged);
+        }
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Failed to fetch products:", error);
+        setIsError(true);
+        setIsLoading(false);
+      }
+    };
 
-      setProducts(mergedProducts);
-      return mergedProducts;
-    },
-    refetchOnWindowFocus: false,
-  });
+    fetchProducts();
+  }, []);
+
+  return { data: products, isLoading, isError };
 };

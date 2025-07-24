@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { categories } from "../data/categories";
 import { useCart } from "../hooks/useCart";
-
-import signOutImg from "../assets/cart.png";
+import signOutImg from "../assets/cart1.png";
 
 
 const Navbar = ({ onSearch, onCategoryChange }) => {
@@ -12,10 +11,18 @@ const Navbar = ({ onSearch, onCategoryChange }) => {
   const cartItems = useCart((state) => state.cart) || [];
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
-  const handleSearch = (e) => {
+  {/*const handleSearch = (e) => {
     e.preventDefault();
     onSearch(searchTerm);
-  };
+  };*/}
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (onSearch) {
+        onSearch(searchTerm.trim());
+    }
+};
+
 
   return (
 
@@ -28,9 +35,7 @@ const Navbar = ({ onSearch, onCategoryChange }) => {
           onClick={() => navigate("/")}
         >
           🛍️ FakeStore
-        </div>
-
-       
+        </div>       
         <div className="flex gap-4 " >
           <NavLink
             to="/"
@@ -42,7 +47,12 @@ const Navbar = ({ onSearch, onCategoryChange }) => {
           >
             Home
           </NavLink>
-          <NavLink
+          
+        </div>
+
+        {/* Right - Auth Links */}
+       
+        <NavLink
             to="/cart"
             className={({ isActive }) =>
               isActive
@@ -50,33 +60,17 @@ const Navbar = ({ onSearch, onCategoryChange }) => {
                 : "text-gray-400 hover:text-gray-500 font-bold relative"
             }
           >
-            Cart
+            <button className="flex items-center  transition-transform duration-300 hover:scale-110">
+                <img src={signOutImg} alt="cart" className="h-6 w-6 mr-1" />
+                
+            </button>
+           
             {cartCount > 0 && (
               <span className="absolute -top-2 -right-4 bg-red-600 text-white text-xs px-1.5 rounded-full">
                 {cartCount}
               </span>
             )}
           </NavLink>
-          <NavLink
-            to="/checkout"
-            className={({ isActive }) =>
-              isActive
-                ? "text-gray-500 font-bold text-1xl "
-                : "text-gray-400 hover:text-gray-500 font-bold"
-            }
-          >
-            Checkout
-          </NavLink>
-        </div>
-
-        {/* Right - Auth Links */}
-        <div className="flex gap-4 items-center">
-    
-            <button className="flex items-center text-gray-600 hover:text-gray-500 transition-transform duration-300 hover:scale-110">
-                <img src={signOutImg} alt="cart" className="h-12 w-12 mr-1" />
-                
-            </button>
-        </div>
 
       </div>
              <div className="h-2 bg-white w-full"></div> 
@@ -96,13 +90,13 @@ const Navbar = ({ onSearch, onCategoryChange }) => {
         </select>
 
         {/* Right - Search Bar */}
-        <form onSubmit={handleSearch} className="flex  w-full sm:w-auto">
+        <form onSubmit={handleSearch} className="flex   rounded w-full sm:w-auto">
           <input
             type="text"
             placeholder="Search products..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="border p-2  w-full sm:w-64 md:w-80 lg:w-[990px]   sm:w-64 focus:outline-none focus:ring focus:border-gray-500"
+            className="border p-2  w-full sm:w-64 md:w-80 lg:w-[990px]   sm:w-64 focus:outline-none focus:ring "
           />
           <button
             type="submit"
@@ -111,6 +105,7 @@ const Navbar = ({ onSearch, onCategoryChange }) => {
             Search
           </button>
         </form>
+
       </div>
     </div>
   );
