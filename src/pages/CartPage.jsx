@@ -17,7 +17,7 @@ const CartPage = () => {
   };
 
   return (
-  <div> <h1 className="text-2xl plac-item-center  justify-between font-bold mx-4 ">Shopping Cart</h1> 
+  <div> <h1 className="text-2xl  text-center font-bold p-4 mx-4 ">Shopping Cart</h1> 
     <div className="p-4 max-w-6xl mx-auto flex flex-col md:flex-row gap-6">
       <div className="flex-1 bg-white rounded-lg shadow p-4">
         <h1 className="text-2xl font-bold mb-4 text-center">Your Cart</h1>

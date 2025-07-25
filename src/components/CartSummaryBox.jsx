@@ -26,15 +26,15 @@ const CartSummaryBox = () => {
         <p className="text-gray-500">Your cart is empty.</p>
       ) : (
         <div className="space-y-2">
-          <div className="flex justify-between border-b pb-1">
+          <div className="flex justify-between  pb-1">
             <span>Subtotal:</span>
             <span>${subtotal.toFixed(2)}</span>
           </div>
-          <div className="flex justify-between border-b pb-1">
+          <div className="flex justify-between  pb-1">
             <span>Shipping:</span>
             <span>${shipping.toFixed(2)}</span>
           </div>
-          <div className="flex justify-between border-b pb-1">
+          <div className="flex justify-between pb-1">
             <span>Tax (10%):</span>
             <span>${tax.toFixed(2)}</span>
           </div>

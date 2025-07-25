@@ -36,7 +36,7 @@ const Navbar = ({ onSearch, onCategoryChange }) => {
         >
           🛍️ FakeStore
         </div>       
-        <div className="flex gap-4 " >
+        <div className="flex   " >
           <NavLink
             to="/"
             className={({ isActive }) =>
@@ -46,6 +46,32 @@ const Navbar = ({ onSearch, onCategoryChange }) => {
             }
           >
             Home
+          </NavLink>
+          
+        </div>
+        <div className="flex  " >
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              isActive
+                ? "text-gray-500 font-bold text-1xl "
+                : "text-gray-400 hover:text-gray-500 font-bold" 
+            }
+          >
+            About
+          </NavLink>
+          
+        </div>
+        <div className="flex  " >
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              isActive
+                ? "text-gray-500 font-bold text-1xl "
+                : "text-gray-400 hover:text-gray-500 font-bold" 
+            }
+          >
+            Contacy Us
           </NavLink>
           
         </div>
